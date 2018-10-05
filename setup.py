@@ -4,7 +4,7 @@ setup(
     name='dtsgui',
     version='0.0.0dev1',
     packages=['dts'],
-    url='https://my.usgs.gov/bitbucket/projects/DTSGUI',
+    url='https://github.com/mdomanski-usgs/DTSGUI',
     license='CC0 1.0',
     author='Marian Domanski',
     author_email='mdomanski@usgs.gov',
