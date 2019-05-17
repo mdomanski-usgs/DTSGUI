@@ -1,3 +1,5 @@
+"""Import DTS data"""
+
 import h5py
 from dts.data.channel import Channel
 from dts.data.dataset import RawDataset, Dataset
@@ -7,6 +9,21 @@ import logging as log
 
 
 def import_data(dataset, name, folder, file_type="sensornet"):
+    """Imports data from DTS files
+
+    Parameters
+    ----------
+    dataset : :class:`dts.data.DataFile`
+    name : str
+    folder : str
+    file_type : {'sensornet', 'salixia'}, optional
+
+    Returns
+    -------
+    :class:`dts.data.channel.Channel`
+
+    """
+
     channel = Channel(dataset, name)
 
     if file_type == "sensornet":
@@ -23,10 +40,6 @@ def import_data(dataset, name, folder, file_type="sensornet"):
     # Initially, we set the 'data' attribute to mirror the raw data.
     # This will be changed if the data is trimmed.
     channel.__hdf__['data'] = h5py.SoftLink(channel.__hdf__.name+'/data_raw')
-
-    # Create dataset to hold subsets.
-    # ref_dtype = h5py.special_dtype(ref=h5py.Reference)
-    # subsets	= __hdf__.create_dataset("subsets", (100,), dtype=ref_dtype)
 
     data_raw.attrs['subset'] = False
     data_raw.attrs['x_min'] = 0

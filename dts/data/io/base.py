@@ -3,6 +3,11 @@ import os
 
 
 class Importer:
+    """Importer base class
+
+    Do not instantiate. Only to be subclassed.
+
+    """
 
     # must be implemented by subclass
     type_map = None
@@ -23,16 +28,15 @@ class Importer:
                     self.files.append(os.path.join(folder, item))
                     last_ext = ext
                 else:
-                    raise Exception("Mixing of .ddf and .dtd extensions is not allowed")
+                    raise Exception(
+                        "Mixing of .ddf and .dtd extensions is not allowed")
             self.file_type = last_ext
         self.folder = folder
 
     @abc.abstractmethod
     def get_interval(self):
-        """
-
-        :return:
-        """
+        """Not implemented (see subclasses)"""
+        raise NotImplementedError
 
     def get_shape(self):
         n_files = len(self.files)
@@ -41,8 +45,5 @@ class Importer:
 
     @abc.abstractmethod
     def load_file(self, filename):
-        """
-
-        :param filename:
-        :return:
-        """
+        """Not implemented (see subclasses)"""
+        raise NotImplementedError

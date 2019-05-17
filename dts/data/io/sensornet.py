@@ -7,21 +7,40 @@ from base import Importer
 
 
 class SensornetImporter(Importer):
+    """Sensornet data import class
+
+    Parameters
+    ----------
+    folder : str
+        Directory containing Sensornet data files
+
+    """
+
     type_map = ["dtd", "ddf"]
     time_format = "%Y/%m/%d %H:%M:%S"
 
     def get_interval(self):
+        """Returns the spatial interval
+
+        Returns
+        -------
+        float
+
+        """
+
         interval = 1.0
 
         if self.file_type == "dtd":
             interval = float(linecache.getline(self.files[0], 13)[0:-1])
 
         elif self.file_type == "ddf":
-            lengths = np.loadtxt(self.files[0], skiprows=26, dtype='f', usecols=(0,))
+            lengths = np.loadtxt(
+                self.files[0], skiprows=26, dtype='f', usecols=(0,))
 
             intervals = lengths[1:]-lengths[0:-1]
             mean = intervals.mean()
-            log.info("Intervals: min {0}, max {1}, mean {2}".format(intervals.min(), intervals.max(), mean))
+            log.info("Intervals: min {0}, max {1}, mean {2}".format(
+                intervals.min(), intervals.max(), mean))
             interval = round(mean, 4)
 
         log.info("Interval - {0:.4f}".format(interval))
@@ -29,6 +48,20 @@ class SensornetImporter(Importer):
         return interval
 
     def load_ddf(self, filename):
+        """Loads temperature and time data from a Sensornet DDF file
+
+        Parameters
+        ----------
+        filename : str
+            Data file name
+
+        Returns
+        -------
+        numpy.ndarray, numpy.ndarray
+            temperatures, time
+
+        """
+
         d = linecache.getline(filename, 10)
         t = linecache.getline(filename, 11)
         ls = [i.split("\t")[1].rstrip() for i in [d, t]]
@@ -42,6 +75,20 @@ class SensornetImporter(Importer):
         return temperatures, time
 
     def load_dtd(self, filename):
+        """Loads temperature and time data from a Sensornet DDF file
+
+        Parameters
+        ----------
+        filename : str
+            Data file name
+
+        Returns
+        -------
+        numpy.ndarray, numpy.ndarray
+            temperatures, time
+
+        """
+
         d = linecache.getline(filename, 8).rstrip()
         t = linecache.getline(filename, 9).rstrip()
 
@@ -51,6 +98,19 @@ class SensornetImporter(Importer):
         return temperatures, time
 
     def load_file(self, filename):
+        """Loads a Sensornet data file
+
+        Parameters
+        ----------
+        filename : str
+            Data file name
+
+        Returns
+        -------
+        numpy.ndarray, numpy.ndarray
+            temperatures, time
+
+        """
         loaderMethod = getattr(self, "load_"+self.file_type)
         return loaderMethod(filename)
 
