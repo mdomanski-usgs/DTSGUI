@@ -46,12 +46,6 @@ class Channel(object):
     def get_subsets(self):
         return self.subsets
 
-    def wrap_data(wrap_point = 0, autotrim=True):
-        """Creates a dataset from raw data that is symmetrical around a certain point on the cable (e.g. for a loopback
-         or double fiber cable)
-         """
-        pass
-
     def merge_channels(self):
         pass
 
@@ -202,4 +196,3 @@ class Channel(object):
 
         if self.geodata.loaded:
             self.geodata.interpolate()
-
