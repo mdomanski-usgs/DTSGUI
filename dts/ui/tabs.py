@@ -12,6 +12,7 @@ class Notebook(aui.AuiNotebook):
     Documentation for base class:
     - http://xoomer.virgilio.it/infinity77/AGW_Docs/aui.auibook.AuiNotebook.html
     """
+
     def __init__(self, parent, id=wx.ID_ANY):
         style = aui.AUI_NB_CLOSE_ON_ALL_TABS | aui.AUI_NB_DEFAULT_STYLE | aui.AUI_NB_NO_TAB_FOCUS
         aui.AuiNotebook.__init__(self, parent, id, agwStyle=style)
@@ -31,12 +32,22 @@ class Notebook(aui.AuiNotebook):
         pass
 
     def DeletePage(self, page_idx):
-        """Subclasses the parent notebook method in order to prevent deletion of new tab selector tab."""
+        """Subclasses the parent notebook method in order to prevent deletion
+        of new tab selector tab.
+
+        """
+
         page = self.GetPage(page_idx)
         if "NewPanelSelector" in page.__class__.__name__:
             log.error("Can't delete this page")
         else:
-            aui.AuiNotebook.DeletePage(self, page_idx)
+            try:
+                aui.AuiNotebook.DeletePage(self, page_idx)
+            except Exception as e:
+                if e.args[0] == 'invalid notebook page':
+                    pass
+                else:
+                    raise e
 
     def on_page_changed(self, evt):
         id = evt.GetSelection()
@@ -75,7 +86,8 @@ class PlotNotebook(Notebook):
             channel = self.window.data.channels[channel_name]
             self.add_channel_editor(channel)
 
-        self.window.Bind(dts.ui.evt.EVT_CHANNEL_IMPORTED, self.on_channel_imported)
+        self.window.Bind(dts.ui.evt.EVT_CHANNEL_IMPORTED,
+                         self.on_channel_imported)
 
     def update_active_main(self, page):
         if page.__class__.__name__ is 'MainViewer':
@@ -118,7 +130,8 @@ class PlotNotebook(Notebook):
         if channel.get_title() == dataset.get_title():
             name = "Viewer: "+dataset.get_title()
         else:
-            name = "Viewer: {}, {}".format(channel.get_title(), dataset.get_title())
+            name = "Viewer: {}, {}".format(
+                channel.get_title(), dataset.get_title())
 
         self.AddPage(page, name)
         return page
