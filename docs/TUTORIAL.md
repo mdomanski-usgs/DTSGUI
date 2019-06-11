@@ -8,8 +8,8 @@
 
 ## 4. Trim the raw data
 
-## 6. Import geospatial data
+## 5. Import geospatial data
 
-## 7. View the channel data on Google Maps
+## 6. View the channel data on Google Maps
 
-## 8. Export the channel data as a CSV
+## 7. Export the channel data as a CSV
