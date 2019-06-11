@@ -47,27 +47,38 @@ class MainPlot(AxesBase):
 
     def _on_clim_changed(self, event):
         self.image.set_clim(event.temp_extents)
-        self.canvas.draw()
+        try:
+            self.canvas.draw()
+        except wx._core.PyDeadObjectError as e:
+            if e.args[0] == "The C++ part of the FigureCanvasWxAgg object " + \
+                    "has been deleted, attribute access no longer allowed.":
+                pass
+            else:
+                raise e
         event.Skip()
 
     def _onOffsetSet(self, event):
         self._set_distance_ticks(event)
-        log.info("Interval and offset updated in {0}".format(self.__class__.__name__))
+        log.info("Interval and offset updated in {0}".format(
+            self.__class__.__name__))
 
     def _distance_ticks(self, interval=None, offset=None):
         data = self.figure.parent.data
 
-        if interval is None: interval = data.get_interval()
-        if offset is None: offset = data.get_offset()
+        if interval is None:
+            interval = data.get_interval()
+        if offset is None:
+            offset = data.get_offset()
 
-        log.debug("Setting distance ticks: Interval: {0}, Offset: {1}".format(interval, offset))
+        log.debug("Setting distance ticks: Interval: {0}, Offset: {1}".format(
+            interval, offset))
 
         ls = range(data.get_array().shape[1])
         ls = ["{0:.2f}".format(i*interval+offset) for i in ls]
         return ls
 
     def _set_distance_ticks(self, event=None):
-        locator = matplotlib.ticker.MaxNLocator(nbins = 8)
+        locator = matplotlib.ticker.MaxNLocator(nbins=8)
         self.xaxis.set_major_locator(locator)
 
         log.debug("Setting distance ticks.")
@@ -76,11 +87,12 @@ class MainPlot(AxesBase):
         offset = None
         if event is not None:
             if hasattr(event, 'interval'):
-                interval =  event.interval
+                interval = event.interval
             if hasattr(event, 'offset'):
-                offset =  event.offset
+                offset = event.offset
 
-        formatter = matplotlib.ticker.IndexFormatter(self._distance_ticks(interval, offset))
+        formatter = matplotlib.ticker.IndexFormatter(
+            self._distance_ticks(interval, offset))
         self.xaxis.set_major_formatter(formatter)
 
         if event is not None:
@@ -90,7 +102,7 @@ class MainPlot(AxesBase):
         locator = matplotlib.ticker.MaxNLocator(
             nbins=8,
             prune="both"
-            )
+        )
         self.yaxis.set_major_locator(locator)
 
         log.debug("Setting time ticks.")
@@ -103,4 +115,3 @@ class MainPlot(AxesBase):
 
         if event is not None:
             self.canvas.draw()
-
