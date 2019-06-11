@@ -1,4 +1,4 @@
-html="""<!DOCTYPE html>
+html = """<!DOCTYPE html>
 <html>
   <head>
     <title>DTS GUI</title>
@@ -36,21 +36,21 @@ html="""<!DOCTYPE html>
       }
     </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script>
       var CustomMarker = function(latlng,  color, map) {
         this.latlng_ = latlng;
         this.color = color;
-    
+
         // Once the LatLng and text are set, add the overlay to the map.  This will
         // trigger a call to panes_changed which should in turn call draw.
         this.setMap(map);
       };
-    
+
       CustomMarker.prototype = jQuery.extend(new google.maps.OverlayView(),{
             draw: function() {
               var me = this;
-          
+
               // Check if the div has been created.
               var div = this.div_;
               if (!div) {
@@ -63,13 +63,13 @@ html="""<!DOCTYPE html>
                 div.style.width = '12px';
                 div.style.height = '12px';
                 div.style.backgroundColor = this.color;
-          
+
                 // Then add the overlay to the DOM
                 var panes = this.getPanes();
                 panes.overlayImage.appendChild(div);
               }
-          
-              // Position the overlay 
+
+              // Position the overlay
               var point = this.getProjection().fromLatLngToDivPixel(this.latlng_);
               if (point) {
                 div.style.left = point.x - 6 + 'px';
@@ -85,9 +85,9 @@ html="""<!DOCTYPE html>
           },
           getPosition: function() {
            return this.latlng_;
-          } 
+          }
       });
-      
+
       window.createMarkers = function(json) {
         coordinates = jQuery.parseJSON(json);
         window.bounds = new google.maps.LatLngBounds();
