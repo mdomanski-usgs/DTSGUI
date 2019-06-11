@@ -2,16 +2,14 @@
 
 ## 1. Start DTSGUI
 
-## 2. Load the data
+## 2. Load the data for channel 1
 
-## 3. View the time series
+## 3. View the channel data
 
 ## 4. Trim the raw data
 
-## 5. View the channel data
+## 6. Import geospatial data
 
-## 7. Import geospatial data
+## 7. View the channel data on Google Maps
 
-## 8. View the channel data on Google Maps
-
-## 9. Export the channel data as a CSV
+## 8. Export the channel data as a CSV
