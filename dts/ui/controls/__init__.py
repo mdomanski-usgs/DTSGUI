@@ -23,11 +23,14 @@ class SubsetsListCtrl(wx.ListBox):
         self.parent = parent
         self.set_control_options()
 
-        wx.ListBox.__init__(self, parent, id=wx.ID_ANY, choices=self.titles, **kwargs)
+        wx.ListBox.__init__(self, parent, id=wx.ID_ANY,
+                            choices=self.titles, **kwargs)
         self.Bind(wx.EVT_LISTBOX, self.__onChange__)
         self.window.Bind(dts.ui.evt.EVT_SUBSET_EDITED, self.__change_options__)
-        self.window.Bind(dts.ui.evt.EVT_SUBSET_SELECTED, self.__on_subset_selected)
-        self.window.Bind(dts.ui.evt.EVT_SUBSET_DELETED, self.__change_options__)
+        self.window.Bind(dts.ui.evt.EVT_SUBSET_SELECTED,
+                         self.__on_subset_selected)
+        self.window.Bind(dts.ui.evt.EVT_SUBSET_DELETED,
+                         self.__change_options__)
         if len(self.keys) > 0:
             self.set_selection(self.keys[0])
 
@@ -62,7 +65,8 @@ class SubsetsListCtrl(wx.ListBox):
 
     def __onChange__(self, event):
         subset = self.get_selection()
-        event = dts.ui.evt.SubsetSelectedEvent(wx.ID_ANY, new=False, subset=subset)
+        event = dts.ui.evt.SubsetSelectedEvent(
+            wx.ID_ANY, new=False, subset=subset)
         wx.PostEvent(self, event)
 
 
@@ -82,21 +86,23 @@ class Fieldset(wx.BoxSizer, dict):
             labelsize = 8
             fontsize = 12
 
-        self.label_font = wx.Font( labelsize, wx.DEFAULT, wx.NORMAL, wx.BOLD, False)
-        self.field_font = wx.Font( 12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False)
+        self.label_font = wx.Font(
+            labelsize, wx.DEFAULT, wx.NORMAL, wx.BOLD, False)
+        self.field_font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False)
 
-        self["label"] = wx.StaticText(parent, wx.ID_ANY, label )
+        self["label"] = wx.StaticText(parent, wx.ID_ANY, label)
         self["label"].SetFont(self.label_font)
 
         sizer.Add(self["label"])
 
         if text is not None:
-            self["control"] = wx.StaticText(parent, wx.ID_ANY, text )
+            self["control"] = wx.StaticText(parent, wx.ID_ANY, text)
             self["control"].SetFont(self.field_font)
         elif control is not None:
             self["control"] = control
         else:
-            Exception("Expected either a wxPython object (under keyword 'control') or string under keyword 'text'.")
+            Exception(
+                "Expected either a wxPython object (under keyword 'control') or string under keyword 'text'.")
         sizer.Add(self["control"], **kwargs)
 
 
@@ -107,7 +113,7 @@ class SubsetCtrl(Panel):
     min = 0
     max = 100
 
-    def __init__(self, parent, formatter=None, value=0, range=(0,100), **kwargs):
+    def __init__(self, parent, formatter=None, value=0, range=(0, 100), **kwargs):
         Panel.__init__(self, parent)
         self.value = value
         if formatter is not None:
@@ -130,10 +136,11 @@ class SubsetCtrl(Panel):
 
     def __doLayout(self):
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.text = wx.TextCtrl(self, value=self.formatter(self.value), style=wx.TE_PROCESS_ENTER)
+        self.text = wx.TextCtrl(self, value=self.formatter(
+            self.value), style=wx.TE_PROCESS_ENTER)
         self.sizer.Add(self.text)
 
-        self.spin = wx.SpinButton(self, style=wx.SP_VERTICAL, size=(16,22))
+        self.spin = wx.SpinButton(self, style=wx.SP_VERTICAL, size=(16, 22))
         self.sizer.Add(self.spin)
 
         self.SetSizer(self.sizer)
@@ -148,7 +155,8 @@ class SubsetCtrl(Panel):
         if not self.focused and self.formatter is not None:
             value = self.formatter(value)
         self.text.SetValue("{}".format(value))
-        event = dts.ui.evt.ValueUpdatedEvent(-1, value=self.GetValue(), source=self)
+        event = dts.ui.evt.ValueUpdatedEvent(-1,
+                                             value=self.GetValue(), source=self)
         wx.PostEvent(self, event)
 
     def GetValue(self):
@@ -204,12 +212,12 @@ class SubsetCtrl(Panel):
     def handle_keypress(self, event):
         if not self.focused:
             return
-        if not all(x in "0123456789" for x in event.String):
-            if self.is_good:
-                self.is_good = False
-                self.text.SetBackgroundColour("pink")
-        else:
-            if not self.is_good:
-                self.is_good = True
-                self.text.SetBackgroundColour("white")
+        try:
+            int(self.GetValueString())
+            self.is_good = True
+            self.text.SetBackgroundColour("white")
+        except ValueError:
+            self.is_good = False
+            self.text.SetBackgroundColour("pink")
+
         event.Skip()
