@@ -174,3 +174,12 @@ set Channel2.
 After importing the channel 2 data, an editor tab for channel 2 will appear.
 
 ![Editor: Channel2](images/dts-gui-editor-channel-2.png)
+
+Use the instructions in step 4 as a guide to trim the raw data for channel 2.
+Enter 312 as the value for the minimum distance index.
+
+Click the button in the channel 2 editor to import geospatial data for channel
+2. The process is similar to the steps you took to import geospatial data
+for channel 1 in step 6. The geospatial reference points for channel 2
+are in a `channel 2_X_Y_UTM.txt`. Be sure to change the coordinates to Easting
+and Northing and specify UTM zone 15.
