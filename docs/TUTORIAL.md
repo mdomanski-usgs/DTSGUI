@@ -181,5 +181,33 @@ Enter 312 as the value for the minimum distance index.
 Click the button in the channel 2 editor to import geospatial data for channel
 2. The process is similar to the steps you took to import geospatial data
 for channel 1 in step 6. The geospatial reference points for channel 2
-are in a `channel 2_X_Y_UTM.txt`. Be sure to change the coordinates to Easting
+are in `channel 2_X_Y_UTM.txt`. Be sure to change the coordinates to Easting
 and Northing and specify UTM zone 15.
+
+## 10. View multi-channel statistics on Google Maps
+
+After loading and importing the georeference data for channel 2, the program
+can provide a view of simple statistics (max, min, mean, and std.) of
+temperature for both cables.
+
+To view the multi-channel statistics, click on the Stats geospatial view item
+under the View drop-down menu. A new tab named Google Maps: Multi-channel
+statistics will appear. You can choose which temperature values are shown by
+changing the selected radio buttons under Series Values. In the below figure,
+the mean temperature is shown.
+
+![Google Maps: Multi-channel statistics](images/google-maps-multi-channel.png)
+
+## 11. Save your changes
+
+All of the changes you've made, including importing channel data, trimming
+data, and georeferencing the cable distances, can be preserved for later
+viewing.
+
+To save your work, chose the Save item under the File drop-down menu. Your
+changes will be preserved in the file you selected after importing the
+channel 1 temperature time series.
+
+The data in the current session can be loaded by selecting the Open an existing
+DTS GUI file option (shown in the first figure in step 2) when the program
+first starts.
