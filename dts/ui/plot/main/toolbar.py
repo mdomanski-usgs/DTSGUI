@@ -17,7 +17,8 @@ class ToolBarBase(object):
             lbl = wx.StaticText(self, (-1, 28), label)
             self.AddControl(lbl)
         # allows the processing of enter commands while the focus is on the control
-        ctrl = control(self, -1, init_val, size=(size, 26), style=wx.TE_PROCESS_ENTER | wx.TAB_TRAVERSAL)
+        ctrl = control(self, -1, init_val, size=(size, 26),
+                       style=wx.TE_PROCESS_ENTER | wx.TAB_TRAVERSAL)
         self.AddControl(ctrl)
         return ctrl
 
@@ -116,7 +117,8 @@ class ColorbarExtentsControl(Panel):
     def on_auto_clim(self, evt):
         temps = self.plot.data.get_temp_range()
         min, max = [float(i) for i in temps]
-        log.debug("Autoset colorbar extents to ({0:.1f}, {1:.2f})".format(min, max))
+        log.debug(
+            "Autoset colorbar extents to ({0:.1f}, {1:.2f})".format(min, max))
         self.plot.set_temp_extents(min, max)
         self.set_min(min)
         self.set_max(max)
@@ -132,7 +134,8 @@ class DisplayOptionsToolbar(Panel, ToolBarBase):
         self.SetBackgroundColour(LightRed)
         outsizer = wx.BoxSizer()
         self.sizer = wx.BoxSizer(wx.HORIZONTAL)
-        txt = wx.StaticText(self, -1, 'Colormap\nLimits', size=(-1, 30), style=wx.ALIGN_RIGHT | wx.TB_NODIVIDER)
+        txt = wx.StaticText(self, -1, 'Colormap\nLimits',
+                            size=(-1, 30), style=wx.ALIGN_RIGHT | wx.TB_NODIVIDER)
         txt.SetFont(ButtonFont())
         self.AddControl(txt, 0, wx.TOP, 3)
 
@@ -140,7 +143,8 @@ class DisplayOptionsToolbar(Panel, ToolBarBase):
         self.cbar_extents = ColorbarExtentsControl(self, temp_extents)
         self.AddControl(self.cbar_extents, 0, wx.TOP | wx.RIGHT, 5)
 
-        txt = wx.StaticText(self, -1, 'Subplot\nVisibility', style=wx.ALIGN_RIGHT)
+        txt = wx.StaticText(self, -1, 'Subplot\nVisibility',
+                            style=wx.ALIGN_RIGHT)
         txt.SetFont(ButtonFont())
         self.AddControl(txt, 0, wx.TOP | wx.LEFT, 3)
 
@@ -153,7 +157,8 @@ class DisplayOptionsToolbar(Panel, ToolBarBase):
             self.subplots[key].SetValue(True)
 
         outsizer.Add(self.sizer, 1, wx.EXPAND | wx.ALL, 3)
-        self.SetSizer(outsizer)  # This is necessary to bind the controls to the frame. Necessary on windows.
+        # This is necessary to bind the controls to the frame. Necessary on windows.
+        self.SetSizer(outsizer)
 
         self.Hide()
         self.Parent.sizer.Add(self, 0, wx.EXPAND | wx.GROW)
@@ -171,8 +176,8 @@ class MainPlotToolbar(Toolbar, ToolBarBase):
     def __init__(self, parent):
         Toolbar.__init__(self, parent)
 
-        SUBPLOTS_BTN = 6
-        self.DeleteToolByPos(SUBPLOTS_BTN)
+        SUBPLOTS_BTN_ID = 153
+        self.DeleteTool(SUBPLOTS_BTN_ID)
 
         self.AddSeparator()
 
@@ -182,7 +187,8 @@ class MainPlotToolbar(Toolbar, ToolBarBase):
         size = 10
         if wx.Platform == "__WXMSW__":
             size = 8
-        control.SetFont(wx.Font(size, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
+        control.SetFont(wx.Font(size, wx.FONTFAMILY_DEFAULT,
+                                wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
         self.AddControl(control)
         control.Bind(wx.EVT_BUTTON, self._toggleDisplayOptions)
 
