@@ -7,7 +7,7 @@ from base import Importer
 import logging
 
 
-class SalixaImporter(Importer):
+class SilixaImporter(Importer):
     """Silixa data import class
 
     Parameters

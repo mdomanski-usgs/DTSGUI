@@ -4,7 +4,7 @@ import h5py
 from dts.data.channel import Channel
 from dts.data.dataset import RawDataset, Dataset
 from sensornet import SensornetImporter
-from salixa import SalixaImporter
+from silixa import SilixaImporter
 import logging as log
 
 
@@ -28,8 +28,8 @@ def import_data(dataset, name, folder, file_type="sensornet"):
 
     if file_type == "sensornet":
         importer = SensornetImporter(folder)
-    elif file_type == "salixa":
-        importer = SalixaImporter(folder)
+    elif file_type == "silixa":
+        importer = SilixaImporter(folder)
     else:
         raise NotImplementedError("Valid importer not available.")
 

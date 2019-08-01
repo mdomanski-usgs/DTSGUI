@@ -12,10 +12,10 @@ dts.data.io.base module
     :undoc-members:
     :show-inheritance:
 
-dts.data.io.salixa module
+dts.data.io.silixa module
 -------------------------
 
-.. automodule:: dts.data.io.salixa
+.. automodule:: dts.data.io.silixa
     :members:
     :undoc-members:
     :show-inheritance:

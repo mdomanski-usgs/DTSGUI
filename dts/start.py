@@ -16,17 +16,17 @@ class Initialize:
 
     choices = [
         InitOption(
-                    "existing",
-                    'Open an existing DTS GUI file',
-                    'Choose a DTS GUI saved file'
-                    ),
+            "existing",
+            'Open an existing DTS GUI file',
+            'Choose a DTS GUI saved file'
+        ),
         InitOption(
-                    "sensornet",
-                    'Sensornet: import a directory of .dtd or .ddf files',
-                    "Choose a directory containing .dtd or .ddf files."
-                    ),
-        InitOption("salixa",
-                   "Salixa: import a directory of .xml files",
+            "sensornet",
+            'Sensornet: import a directory of .dtd or .ddf files',
+            "Choose a directory containing .dtd or .ddf files."
+        ),
+        InitOption("silixa",
+                   "Silixa: import a directory of .xml files",
                    "Choose a directory containing .xml files.")]
 
     def __init__(self, current_datafile=None):
@@ -60,14 +60,16 @@ class Initialize:
                 raise ValueError("Import process cancelled. Exiting")
 
             if self.initialize:
-                filename = IO.save_file("Choose a location to save the dataset.", wildcard) #, wildcard)
+                filename = IO.save_file(
+                    "Choose a location to save the dataset.", wildcard)  # , wildcard)
                 if not filename:
                     raise ValueError("Import process cancelled. Exiting.")
                 if dts.DEBUG:
                     print filename
                 self.data = DataFile(filename, create=self.initialize)
                 try:
-                    self.data.import_channel(data_set_name, folder_path, file_type=choice.action)
+                    self.data.import_channel(
+                        data_set_name, folder_path, file_type=choice.action)
                 except:
                     self.data.close()
                     os.unlink(filename)
@@ -79,9 +81,11 @@ class Initialize:
                                           "Data set exists", style=wx.OK | wx.CENTER | wx.ICON_ERROR) as msg_dlg:
                         data_set_name = self.prompt_for_data_set_name()
                         if data_set_name is None:
-                            raise ValueError("Import process cancelled. Exiting.")
+                            raise ValueError(
+                                "Import process cancelled. Exiting.")
 
-                self.data.import_channel(data_set_name, folder_path, file_type=choice.action)
+                self.data.import_channel(
+                    data_set_name, folder_path, file_type=choice.action)
 
         self.dialog.Destroy()
 
@@ -110,7 +114,8 @@ class Initialize:
 
     def initial_choices(self, text):
 
-        self.dialog = wx.SingleChoiceDialog(None, text, 'Choose a data set', self.__init_options(self.initialize))
+        self.dialog = wx.SingleChoiceDialog(
+            None, text, 'Choose a data set', self.__init_options(self.initialize))
         if self.dialog.ShowModal() == wx.ID_OK:
             if self.initialize:
                 return self.dialog.GetSelection()
